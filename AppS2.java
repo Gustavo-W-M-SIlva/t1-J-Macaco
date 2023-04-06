@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ public class AppS2 {
         */
         long tStart = System.currentTimeMillis();
         int rodadas = 0;
-        HashMap<Integer, Macaco> macacos = new HashMap<>();
+        ArrayList<Macaco> macacos = new ArrayList<>();
 
         try (Stream<String> lines = Files.lines(path)) {
             for (String line : lines.toArray(String[]::new)) {
@@ -53,27 +54,21 @@ public class AppS2 {
                         }
                     }
 
-                    macacos.put(id, new Macaco(id, envP, envI, nPar, nImp));
+                    macacos.add(new Macaco(id, envP, envI, nPar, nImp));
                 }
             }
 
-            while (rodadas > 0) {
-                rodadas--;
-                for (Macaco macaco : macacos.values()) {
+            while (rodadas-- > 0) {
+                for (Macaco macaco : macacos) {
                     macacos.get(macaco.getEnvP()).addPar(macaco.getPar());
                     macacos.get(macaco.getEnvI()).addImp(macaco.getImp());
                     macaco.clear();
                 }
             }
-            long maior = 0; int vencedor = 0;
-            for (Integer id : macacos.keySet()) {
-                Macaco v = macacos.get(id);
-                if (v.getTam() > maior) {
-                    maior = v.getTam();
-                    vencedor = v.getId();
-                }
-            }
-            System.out.println("O vencedor foi o " + macacos.get(vencedor));
+           
+            Macaco vencedor = macacos.stream().max((a, b) -> a.getTam() - b.getTam()).orElse(null);
+
+            System.out.println("O vencedor foi o " + vencedor);
             System.out.println("Tempo de Execução com operador = " + (System.currentTimeMillis() - tStart) + " ms\n");
 
         } catch (IOException ex) {

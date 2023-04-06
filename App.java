@@ -15,9 +15,7 @@ public class App {
         long tStart = System.currentTimeMillis();
         ArrayList<Macaco> listaMacaco = new ArrayList<>();
         int cont = 0,rodadas = 0, caracterN = 0 ; 
-        ;
         BufferedReader reader;
-        
 
         try {
             reader = Files.newBufferedReader(path1, Charset.defaultCharset());
@@ -27,7 +25,7 @@ public class App {
                 int tam = 0, id = 0, envP = 0, envI = 0, nPar = 0, nImp = 0; 
                 String data[] = line.split("");
 
-                if (data[caracterN].startsWith("F")) {
+                if (data[0].startsWith("F")) {
                     caracterN += 6;
                     StringBuilder rodadaS = new StringBuilder();
 
@@ -114,9 +112,7 @@ public class App {
                 cont++;
             }          
 
-            while (rodadas != 0) {
-                rodadas--;
-
+            while (rodadas-- > 0) {
                 for (Macaco v : listaMacaco) {
                     listaMacaco.get(v.getEnvP()).addPar(v.getPar());
                     listaMacaco.get(v.getEnvI()).addImp(v.getImp());
@@ -124,15 +120,9 @@ public class App {
                 }
             }
 
-            long maior = 0; int vencedor = 0;
-            for (Macaco v : listaMacaco) {
-                if (v.getTam() > maior) {
-                    maior = v.getTam();
-                    vencedor = v.getId();
-                }
-            }
+            Macaco vencedor = listaMacaco.stream().max((a, b) -> a.getTam() - b.getTam()).orElse(null);
 
-            System.out.println("O vencedor foi o " + listaMacaco.get(vencedor));
+            System.out.println("O vencedor foi o " + vencedor);
             System.out.println("Tempo de Execução com operador = " + (System.currentTimeMillis()-tStart) + " ms\n");
             
 

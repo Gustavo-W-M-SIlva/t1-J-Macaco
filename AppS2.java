@@ -24,10 +24,8 @@ public class AppS2 {
     }
 
     private static void executarThread(String nomeArquivo, int jogo) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Path path = Paths.get(nomeArquivo);
+        new Thread(() -> {
+        Path path = Paths.get(nomeArquivo);
        
         long tStart = System.currentTimeMillis();
         int rodadas = 0;
@@ -80,9 +78,10 @@ public class AppS2 {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }}}).start();
-    }
-    }
+        }
+    }).start();
+}
+}
 
 
 

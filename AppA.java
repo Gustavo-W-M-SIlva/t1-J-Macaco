@@ -143,7 +143,7 @@ public class AppA {
                 for (Macaco v : listaMacaco) {
                     listaMacaco.get(v.getEnvP()).addPar(v.getPar());
                     listaMacaco.get(v.getEnvI()).addImp(v.getImp());
-                    v.clear();
+                    v.clearPI();
                 }
             }
 

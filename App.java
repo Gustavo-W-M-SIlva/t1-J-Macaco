@@ -23,7 +23,7 @@ public class App {
 
             while ((line = reader.readLine()) != null) {
                 int tam = 0, id = 0, envP = 0, envI = 0, nPar = 0, nImp = 0; 
-                String data[] = line.split("");
+                String[] data = line.split("\\s+");
 
                 if (data[0].startsWith("F")) {
                     caracterN += 6;
@@ -36,68 +36,49 @@ public class App {
                     rodadas = Integer.parseInt(rodadaS.toString());
                 }
 
-                if (data[caracterN].startsWith("M")) {
-                    caracterN += 7;
-                    String idS = data[caracterN];
-
-                    while (data[caracterN + 1].equals(" ") == false) {
-                        caracterN++;
-                        idS = idS + data[caracterN];
-                    }
+                if (data[0].startsWith("M")) {
+                    String idS = data[1];                    
                     id = Integer.parseInt(idS);
                 }
                 
                  caracterN += 2;
 
-                if (data[caracterN].startsWith("p")) {
-                    caracterN += 7;
-                    String envPS = data[caracterN];
+                if (data[2].startsWith("p")) {
+                    String envPS = data[4];
 
-                    while (!data[caracterN + 1].equals(" ")) {
-                        caracterN++;
-                        envPS = envPS + data[caracterN];
-                    }
+                    
                     envP = Integer.parseInt(envPS);
                 }
                 caracterN += 2;
 
-                if (data[caracterN].startsWith("i")) {
+                if (data[5].startsWith("i")) {
                     caracterN += 9;
-                    String envIS = data[caracterN];
+                    String envIS = data[7];
 
-                    while (!data[caracterN + 1].equals(" ") ) {
-                        caracterN++;
-                        envIS = envIS + data[caracterN];
-                    }
                     envI = Integer.parseInt(envIS);
                 }
                 caracterN += 2;                 
 
-                if (data[caracterN].equals(":")) {
+                if (data[8].equals(":")) {
                     caracterN += 2;
-                    StringBuilder tamS = new StringBuilder();
-
-                    while (!data[caracterN].equals(" ")) {
-                        tamS.append(data[caracterN]);
-                        caracterN++;
-                    }
-                    tam = Integer.parseInt(tamS.toString());
+                   
+                    tam = Integer.parseInt(data[9]);
                     caracterN += 4;
                     
                     int elementos = 0;
                     while (elementos != tam) {
                         boolean saida = true;
 
-                        while (caracterN < data.length - 1 && saida) {
+                        for(int i = 11; i < data.length - 1; i++) {
                             caracterN++;
-                            if(data[caracterN].equals(" ")){
-                                String auxS = data[caracterN-1];
+                            
+                                String auxS = data[i];
                                 saida = false;
                                 if (Integer.parseInt(auxS) % 2 == 0)   
                                         nPar++;
                                 else    nImp++;
                             }
-                        }
+                        
                         elementos++;
                         caracterN += 2;
                       
@@ -116,7 +97,7 @@ public class App {
                 for (Macaco v : listaMacaco) {
                     listaMacaco.get(v.getEnvP()).addPar(v.getPar());
                     listaMacaco.get(v.getEnvI()).addImp(v.getImp());
-                    v.clear();
+                    v.clearPI();
                 }
             }
 

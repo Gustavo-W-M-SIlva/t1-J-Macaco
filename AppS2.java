@@ -3,7 +3,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -12,16 +11,24 @@ import java.util.stream.Stream;
 public class AppS2 {
 
     public static void main(String args[]) {
-        Path  path = Paths.get("caso"+1+"000.txt");
-       /* for(int s = 0; s<11; s++ ){
-            if (s == 0){
-                 path = Paths.get("caso0050.txt");
-            }
-            else if(s<3)  path = Paths.get("caso0"+s+"00.txt");
-            else if(s<9) {s+=1;  path = Paths.get("caso0"+s+"00.txt");}
-            else if(s<10)   path = Paths.get("caso0"+s+"00.txt");
-            else 
-        */
+        executarThread("caso0050.txt", 50);
+        executarThread("caso0100.txt",100);
+        executarThread("caso0200.txt",200);
+        executarThread("caso0400.txt",400);
+        executarThread("caso0600.txt",600);
+        executarThread("caso0800.txt",800);
+        executarThread("caso0900.txt",900);
+        executarThread("caso1000.txt",1000);
+            
+        
+    }
+
+    private static void executarThread(String nomeArquivo, int jogo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Path path = Paths.get(nomeArquivo);
+       
         long tStart = System.currentTimeMillis();
         int rodadas = 0;
         ArrayList<Macaco> macacos = new ArrayList<>();
@@ -62,18 +69,19 @@ public class AppS2 {
                 for (Macaco macaco : macacos) {
                     macacos.get(macaco.getEnvP()).addPar(macaco.getPar());
                     macacos.get(macaco.getEnvI()).addImp(macaco.getImp());
-                    macaco.clear();
+                    macaco.clearPI();
                 }
             }
            
             Macaco vencedor = macacos.stream().max((a, b) -> a.getTam() - b.getTam()).orElse(null);
 
-            System.out.println("O vencedor foi o " + vencedor);
+            System.out.println("O vencedor do jogo "+ jogo +" foi o " + vencedor);
             System.out.println("Tempo de Execução com operador = " + (System.currentTimeMillis() - tStart) + " ms\n");
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }}
+        }}}).start();
+    }
     }
 
 

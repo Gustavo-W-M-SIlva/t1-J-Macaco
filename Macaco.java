@@ -19,7 +19,7 @@ public class Macaco {
     public int getPar(){ return nPar; }
     public int getImp(){ return nImp; }
     public int getTam(){ return nPar+nImp; }
-    public void clear(){ nPar = 0; nImp = 0; }
+    public void clearPI(){ nPar = 0; nImp = 0; }
 
     public void addPar(int p){  nPar+= p; }
     public void addImp(int i){  nImp+= i; }

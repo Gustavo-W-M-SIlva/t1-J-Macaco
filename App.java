@@ -7,101 +7,51 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 public class App {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
         Path path1 = Paths.get("caso1000.txt");
+        
         long tStart = System.currentTimeMillis();
-        ArrayList<Macaco> listaMacaco = new ArrayList<>();
-        int cont = 0,rodadas = 0, caracterN = 0 ; 
-        BufferedReader reader;
+        List<Macaco> macacos = new ArrayList<>(); 
 
-        try {
-            reader = Files.newBufferedReader(path1, Charset.defaultCharset());
-            String line = null;
+        try(BufferedReader reader = Files.newBufferedReader(path1, Charset.defaultCharset())) {
+            
+            String line = reader.readLine() ;
+            String[] data = line.split("\\s+");
+            int rodadas = Integer.parseInt(data[1]);
 
             while ((line = reader.readLine()) != null) {
-                int tam = 0, id = 0, envP = 0, envI = 0, nPar = 0, nImp = 0; 
-                String[] data = line.split("\\s+");
+            data = line.split("\\s+");
+                int id = Integer.parseInt(data[1]);
+                int envP = Integer.parseInt(data[4]);
+                int envI = Integer.parseInt(data[7]);
+                int tam = Integer.parseInt(data[9]);
+                int nPar = 0;
+                int nImp = 0;
 
-                if (data[0].startsWith("F")) {
-                    caracterN += 6;
-                    StringBuilder rodadaS = new StringBuilder();
-
-                    while (caracterN < 11) {
-                        rodadaS.append(data[caracterN]);
-                        caracterN++;
-                    }
-                    rodadas = Integer.parseInt(rodadaS.toString());
-                }
-
-                if (data[0].startsWith("M")) {
-                    String idS = data[1];                    
-                    id = Integer.parseInt(idS);
-                }
-                
-                 caracterN += 2;
-
-                if (data[2].startsWith("p")) {
-                    String envPS = data[4];
-
-                    
-                    envP = Integer.parseInt(envPS);
-                }
-                caracterN += 2;
-
-                if (data[5].startsWith("i")) {
-                    caracterN += 9;
-                    String envIS = data[7];
-
-                    envI = Integer.parseInt(envIS);
-                }
-                caracterN += 2;                 
-
-                if (data[8].equals(":")) {
-                    caracterN += 2;
-                   
-                    tam = Integer.parseInt(data[9]);
-                    caracterN += 4;
-                    
-                    int elementos = 0;
-                    while (elementos != tam) {
-                        boolean saida = true;
-
-                        for(int i = 11; i < data.length - 1; i++) {
-                            caracterN++;
-                            
-                                String auxS = data[i];
-                                saida = false;
-                                if (Integer.parseInt(auxS) % 2 == 0)   
-                                        nPar++;
-                                else    nImp++;
-                            }
-                        
-                        elementos++;
-                        caracterN += 2;
-                      
+                for (int i = 11; i < 11 + tam; i++) {
+                    char ultimoValor = data[i].charAt(data[i].length() - 1);
+                    int num = Character.getNumericValue(ultimoValor);
+                    if (num % 2 == 0) {
+                        nPar++;
+                    } else {
+                        nImp++;
                     }
                 }
 
-                if (cont > 0) {
-                    Macaco macaco = new Macaco(id, envP, envI, nPar, nImp);
-                    listaMacaco.add(macaco);
-                }
-                caracterN = 0;
-                cont++;
-            }          
-
+                macacos.add(new Macaco(id, envP, envI, nPar, nImp));
+            
+        }          
             while (rodadas-- > 0) {
-                for (Macaco v : listaMacaco) {
-                    listaMacaco.get(v.getEnvP()).addPar(v.getPar());
-                    listaMacaco.get(v.getEnvI()).addImp(v.getImp());
-                    v.clearPI();
+                for (Macaco macaco : macacos) {
+                    macacos.get(macaco.getEnvP()).addPar(macaco.removePar());
+                    macacos.get(macaco.getEnvI()).addImp(macaco.removeImp());
                 }
+
             }
 
-            Macaco vencedor = listaMacaco.stream().max((a, b) -> a.getTam() - b.getTam()).orElse(null);
+            Macaco vencedor = macacos.stream().max((a, b) -> a.getTam() - b.getTam()).orElse(null);
 
             System.out.println("O vencedor foi o " + vencedor);
             System.out.println("Tempo de Execução com operador = " + (System.currentTimeMillis()-tStart) + " ms\n");

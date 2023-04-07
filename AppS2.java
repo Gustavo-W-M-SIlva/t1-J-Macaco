@@ -3,16 +3,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 
 public class AppS2 {
 
     public static void main(String args[]) {
-       // executarThread("caso0050.txt", 50);//medo de nao saber quem vai acabar primeiro
-       // executarThread("caso0100.txt",100);
+       
        /*  Estava tentando ajudar meu amigos, que ja estão em alguns semestres a frente, e vi que eles 
         estavam fazendo uso de um "tal de Thread"
         perguntei o que era e achei muito interesante o conceito, como ja havia implementado o meu 
@@ -22,43 +19,37 @@ public class AppS2 {
         Eu analisei esse codigo e percebi que com uma pequena modificação ele melhoraria muito, ao inves de fazer varios new Thread
         como esse usuario, resolvi criar o metodo executarThread, para melhor aproveitamento.
 
-        */
         
-        //executarThread("caso0200.txt",200);
-       // executarThread("caso0400.txt",400);
-       // executarThread("caso0600.txt",600);
-       // executarThread("caso0800.txt",800);
-       // executarThread("caso0900.txt",900);
-        executarThread("caso1000.txt",1000);
+        executarThread("caso0050.txt", 50);
+       executarThread("caso0100.txt",100);
+       executarThread("caso0200.txt",200);
+       executarThread("caso0400.txt",400);
+       executarThread("caso0600.txt",600);
+       executarThread("caso0800.txt",800);
+       executarThread("caso0900.txt",900);*/
+       executarThread("caso1000.txt",1000);
             
         
     }
 
     private static void executarThread(String nomeArquivo, int jogo) {
-       // new Thread(() -> { 
+       //new Thread(() -> { 
         //https://dicasdejava.com.br/java-como-criar-uma-thread-com-lambda/
         //Nas minhas pesquisas sobre o uso do Thread encontrei essa maneira mais simples visualmente de implementa-la
         Path path = Paths.get(nomeArquivo);
-       
         long tStart = System.currentTimeMillis();
         int rodadas = 0;
         ArrayList<Macaco> macacos = new ArrayList<>();
 
         try (Stream<String> lines = Files.lines(path).parallel()) {
-            for (String line : lines.toArray(String[]::new)) {
-                String[] data = line.split("\\s+");
+            for (String line1 : lines.toArray(String[]::new)) {
+                String[] data = line1.split("\\s+");
         /*
          Nao estava familiarizado com o uso do split 
          https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
         */
-
-                if (line.startsWith("F")) {
-                    Pattern pattern = Pattern.compile("\\d+");
-                    Matcher matcher = pattern.matcher(line);
-                    if (matcher.find()) {
-                        rodadas = Integer.parseInt(matcher.group());
-                    }
-                } else if (line.startsWith("M")) {
+       
+               if (line1.startsWith("M")) {
                     int id = Integer.parseInt(data[1]);
                     int envP = Integer.parseInt(data[4]);
                     int envI = Integer.parseInt(data[7]);
@@ -77,14 +68,15 @@ public class AppS2 {
                     }
 
                     macacos.add(new Macaco(id, envP, envI, nPar, nImp));
-                }
+                } else  {
+                    rodadas = Integer.parseInt(data[1]);
+                } 
             }
 
             while (rodadas-- > 0) {
                 for (Macaco macaco : macacos) {
-                    macacos.get(macaco.getEnvP()).addPar(macaco.getPar());
-                    macacos.get(macaco.getEnvI()).addImp(macaco.getImp());
-                    macaco.clearPI();
+                    macacos.get(macaco.getEnvP()).addPar(macaco.removePar());
+                    macacos.get(macaco.getEnvI()).addImp(macaco.removeImp());
                 }
             }
            
@@ -96,9 +88,9 @@ public class AppS2 {
         } catch (IOException ex) {
             ex.printStackTrace();
         }//https://www.baeldung.com/java-when-to-use-parallel-stream
-    //}).start();
+    }//).start();
 }
-}
+//}
 
 
 

@@ -3,7 +3,7 @@
 public class Macaco {
     
     private int id, envP, envI;
-    private int nPar, nImp;
+    private int nPar, nImp, rem;
    
     public Macaco(int id, int envP, int envI, int nPar, int nImp){
         this.id = id;
@@ -16,13 +16,18 @@ public class Macaco {
     public int getId(){ return id; }
     public int getEnvP(){ return envP; }
     public int getEnvI(){ return envI; }
-    public int getPar(){ return nPar; }
-    public int getImp(){ return nImp; }
-    public int removePar(){ return nPar; }
-    public int removeImp(){ return nImp; }
-
     public int getTam(){ return nPar+nImp; }
-    public void clearPI(){ nPar = 0; nImp = 0; }
+    
+    public int removePar(){ 
+        this.rem = nPar;
+        nPar = 0;
+        return rem; 
+    }
+    public int removeImp(){ 
+        this.rem = nImp;
+        nImp = 0;
+        return rem;  
+    }
 
     public void addPar(int p){  nPar+= p; }
     public void addImp(int i){  nImp+= i; }

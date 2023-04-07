@@ -140,10 +140,9 @@ public class AppA {
             while (rodadas != 0) {
                 rodadas--;
 
-                for (Macaco v : listaMacaco) {
-                    listaMacaco.get(v.getEnvP()).addPar(v.getPar());
-                    listaMacaco.get(v.getEnvI()).addImp(v.getImp());
-                    v.clearPI();
+                for (Macaco macacos : listaMacaco) {
+                    listaMacaco.get(macacos.getEnvP()).addPar(macacos.removePar());
+                    listaMacaco.get(macacos.getEnvI()).addImp(macacos.removeImp());
                 }
             }
 

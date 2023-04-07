@@ -147,6 +147,7 @@ public class AppA {
                 }
             }
 
+            System.out.println(listaMacaco);
             long maior = 0; int vencedor = 0;
             for (Macaco v : listaMacaco) {
                 if (v.getTam() > maior) {

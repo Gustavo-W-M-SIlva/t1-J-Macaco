@@ -18,6 +18,9 @@ public class Macaco {
     public int getEnvI(){ return envI; }
     public int getPar(){ return nPar; }
     public int getImp(){ return nImp; }
+    public int removePar(){ return nPar; }
+    public int removeImp(){ return nImp; }
+
     public int getTam(){ return nPar+nImp; }
     public void clearPI(){ nPar = 0; nImp = 0; }
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 // Array e HashMap
-public class ArrayHash {
+public class AppArrayHash {
     public static void main(String args[]) {
         // para os testes foram executado um por vez
         executarThread("caso0050.txt", 50);

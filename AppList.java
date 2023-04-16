@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // List e ArrayList
-public class AppS2 {
+public class AppList {
 
     public static void main(String args[]) {
         // para os testes foram executado um por vez

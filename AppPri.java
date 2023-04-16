@@ -1,14 +1,12 @@
-
-    import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
-public class AppA {
+public class AppPri {
 
     public static void main(String[] args) throws Exception {
         Path path1 = Paths.get("caso"+1+"000.txt");
@@ -146,7 +144,7 @@ public class AppA {
                 }
             }
 
-            System.out.println(listaMacaco);
+            //System.out.println(listaMacaco);
             long maior = 0; int vencedor = 0;
             for (Macaco v : listaMacaco) {
                 if (v.getTam() > maior) {

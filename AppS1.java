@@ -1,61 +1,50 @@
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-public class AppS2 {
+public class AppS1 {
 
     public static void main(String args[]) {
-
-        /*
-         * Estava tentando ajudar meu amigos, que ja estão em alguns semestres a frente,
-         * e vi que eles
-         * estavam fazendo uso de um "tal de Thread"
-         * perguntei o que era e achei muito interesante o conceito, como ja havia
-         * implementado o meu
-         * codigo original, logo percebi que ele se encaixava perfeitamente para
-         * melhorar o meu codigo. Entao resolvi ir atras de
-         * mais informacoes para implementa-lo.
-         * https://www.devmedia.com.br/trabalhando-com-threads-em-java/28780
-         * Eu analisei esse codigo e percebi que com uma pequena modificação ele
-         * melhoraria muito, ao inves de fazer varios new Thread
-         * como esse usuario, resolvi criar o metodo executarThread, para melhor
-         * aproveitamento.
-         * 
-         * */
           executarThread("caso0050.txt", 50);
           //executarThread("caso0100.txt",100);
-          //executarThread("caso0200.txt",200);
+         // executarThread("caso0200.txt",200);
           //executarThread("caso0400.txt",400);
           //executarThread("caso0600.txt",600);
-          //executarThread("caso0800.txt",800);
-          //executarThread("caso0900.txt",900);
-          //executarThread("caso1000.txt", 1000);
+         // executarThread("caso0800.txt",800);
+         // executarThread("caso0900.txt",900);
+         
+      //  executarThread("caso1000.txt", 1000);
 
     }
 
     private static void executarThread(String nomeArquivo, int jogo) {
-        //new Thread(() -> {
+        new Thread(() -> {
         // https://dicasdejava.com.br/java-como-criar-uma-thread-com-lambda/
         // Nas minhas pesquisas sobre o uso do Thread encontrei essa maneira mais
         // simples visualmente de implementa-la
         long tStart = System.currentTimeMillis();
-        int rodadas = 0;
+        int rodadas = 500;
         ArrayList<Macaco> macacos = new ArrayList<>();
 
         try  {
-            List <String> lines = Files.lines(Paths.get(nomeArquivo)).collect(Collectors.toList());
+            Stream<String> lines = Files.lines(Paths.get(nomeArquivo));
+            Optional<String> primeiraLinha = lines.findFirst();
+    if (primeiraLinha.isPresent()) {
+    String linha = primeiraLinha.get();
+    System.out.println(linha);
+} 
+            //rodadas = Integer.parseInt(data1[1]);
             
-            
-            for (String line : lines) {
+            lines.forEach(line -> {
                 String[] data = line.split("\\s+");
                 /*
                  * Nao estava familiarizado com o uso do split
                  * https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
                  */
+                System.out.println(line);
 
                 if (line.startsWith("Macaco")) {
                     int id = Integer.parseInt(data[1]);
@@ -76,10 +65,10 @@ public class AppS2 {
                     }
 
                     macacos.add(new Macaco(id, envP, envI, nPar, nImp));
-                } else {
-                    rodadas = Integer.parseInt(data[1]);
-                }
-            }
+                } 
+            });
+
+            lines.close();
 
             while (rodadas-- > 0) {
                 for (Macaco macaco : macacos) {
@@ -92,10 +81,11 @@ public class AppS2 {
 
             System.out.println("O vencedor do jogo " + jogo + " foi o " + vencedor);
             System.out.println("Tempo de Execução com operador = " + (System.currentTimeMillis() - tStart) + " ms\n");
+            System.out.println();
 
         } catch (IOException ex) {
             ex.printStackTrace();
         } // https://www.baeldung.com/java-when-to-use-parallel-stream
-    } //).start();
+    } ).start();
 }
- //}
+ }
